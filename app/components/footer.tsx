@@ -19,9 +19,11 @@ export function Footer() {
             Horário
           </p>
           <p className="font-sans text-sm text-oat/85">
-            Seg–Sex 07:30–19:00
+            Seg–Sex 06:00–20:00
             <br />
-            Sáb–Dom 08:00–18:00
+            Sáb 07:00–21:00
+            <br />
+            Dom fechado
           </p>
         </div>
 
