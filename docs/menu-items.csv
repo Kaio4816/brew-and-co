@@ -1,0 +1,21 @@
+category,name,description,price,badge
+"Bebidas Expressas","Espresso","Duplo shot, encorpado e aromático.","R$6,00",
+"Bebidas Expressas","Cafezinho","O clássico cafezinho brasileiro, curto e forte.","R$5,00","Favorito da Casa"
+"Bebidas Expressas","Café com Leite","Café coado e leite quente, em partes iguais.","R$7,00","Popular"
+"Bebidas Expressas","Cappuccino","Espresso, leite vaporizado e espuma cremosa.","R$9,50","Popular"
+"Bebidas Expressas","Café Latte","Espresso e leite vaporizado, servido em copo alto.","R$10,00",
+"Doces","Pastel de Nata","Massa folhada e creme, polvilhado com canela.","R$9,00","Popular"
+"Doces","Croissant Amanteigado","Assado todas as manhãs, estaladiço por fora.","R$12,00","Favorito da Casa"
+"Doces","Torta de Amêndoa","Recheio cremoso de amêndoa em massa quebrada.","R$16,00",
+"Doces","Bolo de Chocolate","Fatia úmida, cobertura de ganache.","R$14,00",
+"Doces","Bolo de Fubá","Receita de fubá cremoso, fofinho e adocicado.","R$8,00",
+"Sanduíches","Misto Quente","Presunto e queijo, no pão de forma tostado.","R$14,00","Popular"
+"Sanduíches","Sanduíche de Frango","Frango grelhado, alface e maionese caseira.","R$18,00",
+"Sanduíches","Bauru","Rosbife, queijo derretido, tomate e picles, no pão francês.","R$22,00","Favorito da Casa"
+"Sanduíches","Sanduíche Vegetariano","Húmus, legumes grelhados e rúcula.","R$17,00",
+"Sanduíches","Baguete de Atum","Atum, ovo cozido e maionese de ervas.","R$19,00",
+"Bebidas Geladas","Ice Latte","Espresso, leite frio e cubos de gelo.","R$14,00","Popular"
+"Bebidas Geladas","Frappé de Caramelo","Café batido com gelo, leite e caramelo.","R$16,00","Favorito da Casa"
+"Bebidas Geladas","Suco de Laranja Natural","Espremido na hora, sem açúcar adicionado.","R$12,00",
+"Bebidas Geladas","Limonada Caseira","Limão, hortelã e água com gás.","R$12,00",
+"Bebidas Geladas","Chá Gelado de Pêssego","Chá preto, pêssego e um toque de mel.","R$11,00",

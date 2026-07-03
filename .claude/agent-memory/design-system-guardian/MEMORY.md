@@ -1,0 +1,3 @@
+- [Design docs map](design_docs_map.md) — what each file in docs/design/ covers and how they relate
+- [Design token facts](design_tokens_facts.md) — concrete color/font/weight values, loaded font weights, recurring text-2xl weight pattern
+- [Design doc inconsistencies](design_doc_inconsistencies.md) — known contradictions between docs/design files themselves (Fraunces 800 weight, Raspberry-as-CTA, Badge contrast, Hero eyebrow color) found 2026-07-02

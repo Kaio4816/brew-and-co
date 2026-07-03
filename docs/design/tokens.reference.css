@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* REFERENCE ONLY — not imported by the app. See tokens.md */
+/* Mirrors the token block in app/globals.css verbatim (minus the */
+/* @import "tailwindcss" line and the body base style). Keep these */
+/* two files in sync whenever a token changes. */
 
 :root {
   /* raw color palette — single source of truth, see docs/design/tokens.md.
@@ -75,6 +78,4 @@
   --shadow-stamp: 0 3px 0 rgba(42, 26, 18, 0.25);
 }
 
-body {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-}
+/* No dark-mode block — dark mode is deferred, see tokens.md § 3 */
