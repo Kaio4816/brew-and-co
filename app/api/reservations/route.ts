@@ -57,6 +57,42 @@ async function readReservations(): Promise<Reservation[]> {
   }
 }
 
+/**
+ * Best-effort notification to the n8n reservation workflow. The reservation
+ * is already persisted to disk by the time this runs, so a failure here
+ * (network error, timeout, non-2xx) is only logged — it must never affect
+ * the response already sent to the client. booking_time combines date+time
+ * into a single ISO 8601 datetime with an explicit -03:00 (São Paulo, no DST
+ * since 2019) offset, independent of whatever timezone this server runs in.
+ */
+async function notifyN8n(reservation: Reservation): Promise<void> {
+  const webhookUrl = process.env.N8N_RESERVATION_WEBHOOK_URL;
+  const webhookSecret = process.env.N8N_WEBHOOK_SECRET;
+
+  if (!webhookUrl || !webhookSecret) {
+    console.warn("N8N_RESERVATION_WEBHOOK_URL/N8N_WEBHOOK_SECRET não configurados — pulando notificação ao n8n.");
+    return;
+  }
+
+  const response = await fetch(webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-webhook-secret": webhookSecret,
+    },
+    body: JSON.stringify({
+      guest_name: reservation.name,
+      group_size: reservation.partySize,
+      booking_time: `${reservation.date}T${reservation.time}:00-03:00`,
+    }),
+    signal: AbortSignal.timeout(8000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Webhook do n8n respondeu ${response.status}`);
+  }
+}
+
 export async function POST(request: Request): Promise<Response> {
   let body: unknown;
   try {
@@ -81,6 +117,10 @@ export async function POST(request: Request): Promise<Response> {
 
   await mkdir(DATA_DIR, { recursive: true });
   await writeFile(DATA_PATH, JSON.stringify(reservations, null, 2), "utf-8");
+
+  notifyN8n(reservation).catch((error) => {
+    console.error("Falha ao notificar n8n:", error);
+  });
 
   return Response.json(reservation, { status: 201 });
 }

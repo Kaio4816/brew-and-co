@@ -1,7 +1,10 @@
 /* REFERENCE ONLY — not imported by the app. See tokens.md */
 /* Mirrors the token block in app/globals.css verbatim (minus the */
-/* @import "tailwindcss" line and the body base style). Keep these */
-/* two files in sync whenever a token changes. */
+/* @import "tailwindcss" line, the body base style, and the @n8n/chat */
+/* widget-theming block — that block only consumes --palette-*/--font-* */
+/* tokens via var()/color-mix() to theme a third-party package's own */
+/* --chat--* namespace, it doesn't declare any tokens of its own). */
+/* Keep these two files in sync whenever a token changes. */
 
 :root {
   /* raw color palette — single source of truth, see docs/design/tokens.md.

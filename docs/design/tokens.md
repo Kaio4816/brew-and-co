@@ -160,7 +160,7 @@ with a `prefers-reduced-motion` override:
 
 ## 9. Full reference
 
-The complete, current `app/globals.css` structure is mirrored verbatim in [`tokens.reference.css`](./tokens.reference.css) — that file is kept byte-identical to the live app file's token block, minus the parts of `globals.css` that aren't tokens (the `body` base style).
+The complete, current `app/globals.css` structure is mirrored verbatim in [`tokens.reference.css`](./tokens.reference.css) — that file is kept byte-identical to the live app file's token block, minus the parts of `globals.css` that aren't tokens: the `body` base style, and the `@n8n/chat` widget-theming block (a `:root` block plus two class-selector rules at the end of the file that only *consume* `--palette-*`/`--font-*` tokens via `var()`/`color-mix()` to theme a third-party package's own `--chat--*` variable namespace — it never redeclares a `--palette-*`/`--color-*`/`--font-*`/`--radius-*`/etc. token, so it isn't part of this project's own token system and has no meaning without `@n8n/chat/style.css` already loaded).
 
 ## 10. Token naming conventions & governance
 

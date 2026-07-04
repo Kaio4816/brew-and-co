@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Archivo, Space_Mono } from "next/font/google";
 import { ReservationDialogProvider } from "./components/reservation-dialog";
+import { N8nChat } from "./components/n8n-chat";
+import "@n8n/chat/style.css";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -39,6 +41,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <ReservationDialogProvider>{children}</ReservationDialogProvider>
+        <N8nChat />
       </body>
     </html>
   );
