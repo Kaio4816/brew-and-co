@@ -78,3 +78,139 @@
 body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* @n8n/chat widget theme — NOT part of the design token block above (so it's
+   intentionally not mirrored in docs/design/tokens.reference.css; this is a
+   second, distinct excluded-block category alongside the body base style —
+   see tokens.md § 9). Overrides the package's own --chat--* CSS variables
+   (defined in its stylesheet, imported before this file in app/layout.tsx —
+   the full variable list lives in node_modules/@n8n/chat/dist/style.css) so
+   the floating chat widget reads as part of Brew & Co rather than the
+   package's default pink/teal look.
+
+   Every color below is either a direct var(--palette-*) reference or a
+   color-mix() derived from one — never a hand-picked hex — so there isn't a
+   second, parallel source of truth for brand color living only in this
+   block. --chat--border-radius / --chat--window--border-radius /
+   --chat--input--button--border-radius / --chat--heading--font-size are
+   literal values mirroring --radius-md / --radius-lg / --radius-full /
+   --text-xl, because @theme inline bakes those into generated utility CSS
+   with no runtime variable to reference here (same reason motion tokens are
+   kept out of @theme above). --chat--font-family is NOT in that situation —
+   it references var(--font-archivo), a real next/font CSS variable that
+   exists at runtime independent of Tailwind's @theme, so it isn't a
+   "literal value" in the same sense as the radius/size lines above.
+
+   Layering follows the same Oat-panel / Parchment-recessed-field pattern
+   already implemented in ReservationDialog (app/components/reservation-
+   dialog.tsx): the dialog panel is bg-surface (Oat) with shadow-elevated,
+   while its <input> fields sit on bg-background (Parchment) with a
+   border-foreground/15 hairline and a 2px Espresso focus-visible outline.
+   The chat window reuses that exact pairing — window/body Oat, bot message
+   bubble + input field Parchment — instead of stacking Oat directly on Oat.
+   (The previous version of this block pointed both --chat--color-light and
+   --chat--message--bot--background at Oat with no border/shadow between
+   them, violating style-guide.md § 3's "never stack Oat-on-Oat" rule.) */
+:root {
+  /* --- brand color mapping (all derived from --palette-*, no hand-picked hex) --- */
+  --chat--color--primary: var(--palette-marigold);
+  --chat--color--primary-shade-50: color-mix(in srgb, var(--palette-marigold) 88%, black); /* hover shade */
+  --chat--color--primary--shade-100: color-mix(in srgb, var(--palette-marigold) 76%, black); /* active/pressed shade */
+  --chat--color--secondary: var(--palette-espresso);
+  --chat--color-secondary-shade-50: color-mix(in srgb, var(--palette-espresso) 80%, white);
+  --chat--color-dark: var(--palette-espresso);
+  --chat--color-light: var(--palette-oat); /* window/body/footer surface — the "panel", matching ReservationDialog's bg-surface */
+  --chat--color-light-shade-50: color-mix(in srgb, var(--palette-toffee) 30%, var(--palette-oat)); /* window border — warm tan, not the package's cool gray */
+  --chat--color-light-shade-100: color-mix(in srgb, var(--palette-toffee) 45%, var(--palette-oat)); /* footer divider — same hairline language as the Divider component, components.md § 7 */
+  --chat--color-disabled: color-mix(in srgb, var(--palette-toffee) 55%, var(--palette-oat));
+  --chat--color-typing: var(--palette-toffee);
+
+  /* --- structure --- */
+  --chat--font-family: var(--font-archivo), Arial, Helvetica, sans-serif;
+  --chat--border-radius: 0.75rem; /* mirrors --radius-md */
+  --chat--window--border-radius: 1.25rem; /* mirrors --radius-lg — same as ReservationDialog's rounded-lg */
+  --chat--input--button--border-radius: 9999px; /* mirrors --radius-full — pill shape per Button spec */
+  --chat--heading--font-size: 1.375rem; /* mirrors --text-xl instead of the package default 2em, which read oversized inside a compact window */
+
+  /* --- header band (Espresso/Oat, echoing the Footer's "close of page" dark band, components.md § 8) --- */
+  --chat--header--background: var(--palette-espresso);
+  --chat--header--color: var(--palette-oat);
+
+  /* --- toggle bubble --- */
+  --chat--toggle--background: var(--palette-marigold);
+  --chat--toggle--hover--background: var(--chat--color--primary-shade-50);
+  --chat--toggle--active--background: var(--chat--color--primary--shade-100);
+  --chat--toggle--color: var(--palette-espresso);
+
+  /* --- message bubbles --- */
+  --chat--message--user--background: var(--palette-espresso);
+  --chat--message--user--color: var(--palette-oat);
+  --chat--message--bot--background: var(--palette-parchment); /* recessed against the Oat panel, see layering note above — was --palette-oat (Oat-on-Oat) before this fix */
+  --chat--message--bot--color: var(--palette-espresso);
+  --chat--message--bot--border: 1px solid color-mix(in srgb, var(--palette-espresso) 10%, transparent); /* light definition, belt-and-suspenders alongside the Parchment/Oat contrast above */
+
+  /* --- input area (Parchment recessed field on the Oat panel, matching ReservationDialog's <input> treatment) --- */
+  --chat--input--background: var(--palette-parchment);
+  --chat--input--container--background: var(--palette-parchment);
+  --chat--input--text-color: var(--palette-espresso);
+  --chat--input--border: 1px solid color-mix(in srgb, var(--palette-espresso) 15%, transparent); /* mirrors reservation-dialog.tsx's border-foreground/15 */
+  --chat--input--border-active: 2px solid var(--palette-espresso); /* mirrors reservation-dialog.tsx's focus-visible:outline-2 outline-foreground */
+
+  --chat--input--send--button--background: var(--palette-marigold);
+  --chat--input--send--button--color: var(--palette-espresso);
+  --chat--input--send--button--background-hover: var(--chat--color--primary-shade-50);
+  --chat--input--send--button--color-hover: var(--palette-espresso);
+
+  --chat--input--file--button--background: var(--palette-oat);
+  --chat--input--file--button--color: var(--palette-espresso);
+  --chat--input--file--button--background-hover: var(--palette-parchment);
+  --chat--input--file--button--color-hover: var(--palette-espresso);
+
+  /* --- buttons rendered inside message content (e.g. quick replies) --- */
+  --chat--button--background--primary: var(--palette-marigold);
+  --chat--button--color--primary: var(--palette-espresso);
+  --chat--button--border--primary: none;
+  --chat--button--background--primary--hover: var(--chat--color--primary-shade-50);
+  --chat--button--color--primary--hover: var(--palette-espresso);
+  --chat--button--border--primary--hover: none;
+  --chat--button--background--primary--disabled: color-mix(in srgb, var(--palette-marigold) 45%, var(--palette-parchment));
+  --chat--button--color--primary--disabled: color-mix(in srgb, var(--palette-espresso) 45%, var(--palette-parchment));
+  --chat--button--border--primary--disabled: none;
+
+  --chat--button--background--secondary: var(--palette-oat); /* Secondary variant per components.md § 6: Oat fill, Espresso border + text */
+  --chat--button--color--secondary: var(--palette-espresso);
+  --chat--button--border--secondary: 1px solid var(--palette-espresso);
+  --chat--button--background--secondary--hover: var(--palette-parchment);
+  --chat--button--color--secondary--hover: var(--palette-espresso);
+  --chat--button--border--secondary--hover: 1px solid var(--palette-espresso);
+  --chat--button--background--secondary--disabled: color-mix(in srgb, var(--palette-oat) 60%, var(--palette-parchment));
+  --chat--button--color--secondary--disabled: color-mix(in srgb, var(--palette-espresso) 40%, var(--palette-oat));
+  --chat--button--border--secondary--disabled: 1px solid color-mix(in srgb, var(--palette-espresso) 25%, transparent);
+}
+
+/* No upstream --chat--* variable controls the window/toggle box-shadow (only
+   --chat--window--border exists) — these two rules target the package's
+   fixed class names directly, with literal values mirroring --shadow-
+   elevated/--shadow-card for the same reason the radius/heading-size lines
+   above are literal (no runtime var to reference through @theme inline).
+   Gives the floating window the same elevation language as MenuTile/Card
+   (components.md § 4 / § 9: shadow-card at rest, shadow-elevated on
+   hover/focus) instead of the package's flat, shadowless default. */
+.chat-window {
+  box-shadow: 0 8px 24px rgba(42, 26, 18, 0.14); /* --shadow-elevated */
+}
+
+.chat-window-toggle {
+  box-shadow:
+    0 1px 2px rgba(42, 26, 18, 0.06),
+    0 4px 12px rgba(42, 26, 18, 0.08); /* --shadow-card */
+  transition:
+    box-shadow var(--chat--transition-duration) ease,
+    transform var(--chat--transition-duration) ease,
+    background var(--chat--transition-duration) ease;
+}
+
+.chat-window-toggle:hover,
+.chat-window-toggle:focus {
+  box-shadow: 0 8px 24px rgba(42, 26, 18, 0.14); /* --shadow-elevated */
+}
